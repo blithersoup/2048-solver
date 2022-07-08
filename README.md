@@ -1,2 +1,3 @@
-# whats-next-ds
-Illustrations of graph algorithms in C with graphics in Python
+# 2048-solver
+
+pythonic and cpp implementations of the game 2048, and solver using trees
