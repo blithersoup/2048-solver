@@ -1,7 +1,7 @@
-from crypt import methods
 from functools import reduce, wraps
 from typing import Callable
-from numpy import transpose, fliplr
+from numpy import transpose, fliplr, array_equiv
+from random import randint
 
 def Flip(func: Callable[[list[list[int]]], list[list[int]]]) -> Callable[[list[list[int]]], list[list[int]]]:
 	"""Left to write flip before and after function"""
@@ -45,8 +45,9 @@ def combine(board: list[list[int]]) -> list[list[int]]:
 class Game:
 	"""2048 python implementation"""
 	def __init__(self):
-		self.board: list[list[int]] = [[0] * 4] * 4
+		self.board: list[list[int]] = [[0,0,0,2],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
 		self.funclist: list[Callable] = [self.left, self.right, self.up, self.down]
+		self.end = False
 
 	@FillLeft
 	def left(self, matrix: list[list[int]]):
@@ -74,12 +75,27 @@ class Game:
 
 	def move(self, move):
 		"""Moves board - 0-3 as L-R-Up-Down"""
+		if self.isMove(move) == False:
+			return
 		self.board = self.funclist[move](self.board)
+		if not self.addnum():
+			self.end = True
 
-	def availableMoves(self) -> list[bool]:
-		"""Returns true for all possible moves on current board"""
-		return list(map(lambda x: x(self.board) == self.board, self.funclist))
+	def isMove(self, move) -> list[bool]:
+		"""Returns true if the move changes the board"""
+		return not array_equiv(self.funclist[move](self.board), self.board)
 
 	def canMove(self) -> bool:
 		"""Returns true if can move"""
-		return reduce(lambda x, y: x + y, self.availableMoves())
+		return reduce(lambda x, y: x + y, map(lambda x: self.isMove(x), range(4)))
+	
+	def addnum(self):
+		added = randint(0,1) * 2 + 2
+		if reduce(lambda x, y: min(x,y), (all(x) for x in self.board)):
+			return False
+
+		while True:
+			x, y = randint(0,3), randint(0,3)
+			if not self.board[x][y]:
+				self.board[x][y] = added
+				return True
