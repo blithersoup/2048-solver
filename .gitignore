@@ -67,3 +67,10 @@ dkms.conf
 */compile_commands.json
 */.cmake/
 */*.cmake
+
+# build
+build/*
+
+# python
+__pycache__/
+*.py[cod]
