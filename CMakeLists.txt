@@ -1,13 +1,7 @@
 cmake_minimum_required( VERSION 3.5 )
 project( 2048_solver VERSION 0.0.1 LANGUAGES CXX )
-file(GLOB_RECURSE 2048_src 
-    DEPENDS 
-    "*.cpp"
-    "*.hpp"
-)
-add_library(2048_solver SHARED 
-    ${2048_src}
-)
+
+add_subdirectory(src)
 
 set_target_properties(2048_solver PROPERTIES LINKER_LANGUAGE CXX)
 

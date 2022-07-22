@@ -48,6 +48,8 @@ class Game:
 		self.board: list[list[int]] = [[0,0,0,2],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
 		self.funclist: list[Callable] = [self.left, self.right, self.up, self.down]
 		self.end = False
+		self.mode = 'player'
+		self.sleep_time = 1
 
 	@FillLeft
 	def left(self, matrix: list[list[int]]):

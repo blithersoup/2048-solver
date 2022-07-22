@@ -2,11 +2,12 @@
 #define GAME_HPP
 
 #include <vector>
+using namespace std;
 
 void fill_left(vector<vector<int>>&);
 void flip(vector<vector<int>>&);
 void transpose(vector<vector<int>>&);
-void combine(vector<vector<int>> &);
+void combine(vector<vector<int>>&);
 bool any_zeroes(vector<vector<int>>);
 bool add_num(vector<vector<int>>&);
 

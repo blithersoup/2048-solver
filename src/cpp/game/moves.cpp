@@ -1,5 +1,4 @@
 #include "game.hpp"
-#include <vector>
 
 bool move_left(vector<vector<int>> &prev)
 {

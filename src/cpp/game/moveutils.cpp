@@ -1,11 +1,10 @@
 #include "game.hpp"
-#include <vector>
 #include <numeric>
 #include <algorithm>
+#include <functional>
 
-using namespace std;
 
-void fill_left(vector<vector<int>> &prev)
+void fill_left(vector<vector<int>>& prev)
 {
     vector<vector<int>> mat;
     for (auto row : prev)
@@ -18,7 +17,7 @@ void fill_left(vector<vector<int>> &prev)
     prev = mat;
 }
 
-void flip(vector<vector<int>> &prev)
+void flip(vector<vector<int>>& prev)
 {
     vector<vector<int>> mat;
     for (auto row : prev)
@@ -34,7 +33,7 @@ void flip(vector<vector<int>> &prev)
     prev = mat;
 }
 
-void transpose(vector<vector<int>> &prev)
+void transpose(vector<vector<int>>& prev)
 {
     vector<vector<int>> mat(prev[0].size(), vector<int>());
 
@@ -48,7 +47,7 @@ void transpose(vector<vector<int>> &prev)
     prev = mat;
 }
 
-void combine(vector<vector<int>> &prev)
+void combine(vector<vector<int>>& prev)
 {
     vector<vector<int>> mat(prev[0].size(), vector<int>());
 
@@ -85,7 +84,7 @@ bool any_zeroes(vector<vector<int>> prev)
     return false;
 }
 
-bool add_num(vector<vector<int>> &prev)
+bool add_num(vector<vector<int>>& prev)
 {
     if (!any_zeroes(prev))
     {
