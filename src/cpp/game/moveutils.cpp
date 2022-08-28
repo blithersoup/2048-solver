@@ -3,8 +3,7 @@
 #include <algorithm>
 #include <functional>
 
-
-void fill_left(vector<vector<int>>& prev)
+void fill_left(vector<vector<int>> &prev)
 {
     vector<vector<int>> mat;
     for (auto row : prev)
@@ -17,7 +16,7 @@ void fill_left(vector<vector<int>>& prev)
     prev = mat;
 }
 
-void flip(vector<vector<int>>& prev)
+void flip(vector<vector<int>> &prev)
 {
     vector<vector<int>> mat;
     for (auto row : prev)
@@ -33,7 +32,7 @@ void flip(vector<vector<int>>& prev)
     prev = mat;
 }
 
-void transpose(vector<vector<int>>& prev)
+void transpose(vector<vector<int>> &prev)
 {
     vector<vector<int>> mat(prev[0].size(), vector<int>());
 
@@ -47,7 +46,7 @@ void transpose(vector<vector<int>>& prev)
     prev = mat;
 }
 
-void combine(vector<vector<int>>& prev)
+void combine(vector<vector<int>> &prev)
 {
     vector<vector<int>> mat(prev[0].size(), vector<int>());
 
@@ -84,7 +83,7 @@ bool any_zeroes(vector<vector<int>> prev)
     return false;
 }
 
-bool add_num(vector<vector<int>>& prev)
+bool add_num(vector<vector<int>> &prev)
 {
     if (!any_zeroes(prev))
     {
@@ -102,4 +101,61 @@ bool add_num(vector<vector<int>>& prev)
             return true;
         }
     }
+}
+
+bool add_all_num(vector<vector<int>> prev, vector<vector<vector<int>>> &res)
+{
+    if (!any_zeroes(prev))
+    {
+        return false;
+    }
+
+    for (auto i = 0; i < 4; i++)
+    {
+        for (auto j = 0; j < 4; j++)
+        {
+            if (prev[i][j] == 0)
+            {
+                prev[i][j] = 2;
+                res.push_back(prev);
+                prev[i][j] = 4;
+                res.push_back(prev);
+                prev[i][j] = 0;
+            }
+        }
+    }
+    return true;
+}
+
+int eval_board(vector<vector<int>> prev)
+{
+    int score(0), zeroes(0);
+    for (auto row : prev)
+    {
+        for (auto num : row)
+        {
+            if (!num)
+                zeroes++;
+            score += num;
+        }
+    }
+    return score / zeroes;
+}
+
+auto moves_no_added(vector<vector<int>> prev)
+{
+    vector<decltype(prev)> moves;
+    auto cp(prev);
+    moveboard(cp, left);
+    moves.push_back(cp);
+    cp = prev;
+    moveboard(cp, right);
+    moves.push_back(cp);
+    cp = prev;
+    moveboard(cp, up);
+    moves.push_back(cp);
+    cp = prev;
+    moveboard(cp, down);
+    moves.push_back(cp);
+    return moves;
 }

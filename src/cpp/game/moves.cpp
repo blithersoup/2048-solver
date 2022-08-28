@@ -1,34 +1,43 @@
 #include "game.hpp"
 
-bool move_left(vector<vector<int>> &prev)
+bool moveboard(vector<vector<int>> &prev, void movefunc(vector<vector<int>> &))
 {
-    fill_left(prev);
-    combine(prev);
-    fill_left(prev);
+    movefunc(prev);
     return add_num(prev);
 }
 
-bool move_right(vector<vector<int>> &prev)
+bool all_move(vector<vector<int>> &prev, vector<vector<vector<int>>> &res, void movefunc(vector<vector<int>> &))
 {
-    flip(prev);
-    fill_left(prev);
-    combine(prev);
-    fill_left(prev);
-    flip(prev);
-    return add_num(prev);
+    movefunc(prev);
+    return add_all_num(prev, res);
 }
 
-bool move_up(vector<vector<int>> &prev)
+void left(vector<vector<int>> &prev)
 {
-    transpose(prev);
     fill_left(prev);
     combine(prev);
     fill_left(prev);
-    transpose(prev);
-    return add_num(prev);
 }
 
-bool move_down(vector<vector<int>> &prev)
+void right(vector<vector<int>> &prev)
+{
+    flip(prev);
+    fill_left(prev);
+    combine(prev);
+    fill_left(prev);
+    flip(prev);
+}
+
+void up(vector<vector<int>> &prev)
+{
+    transpose(prev);
+    fill_left(prev);
+    combine(prev);
+    fill_left(prev);
+    transpose(prev);
+}
+
+void down(vector<vector<int>> &prev)
 {
     transpose(prev);
     flip(prev);
@@ -37,35 +46,62 @@ bool move_down(vector<vector<int>> &prev)
     fill_left(prev);
     flip(prev);
     transpose(prev);
-    return add_num(prev);
 }
 
 auto all_moves(vector<vector<int>> prev)
 {
-    vector<vector<int>> cp(prev);
+    decltype(prev) cp(prev);
     vector<int> ret;
-    move_left(cp);
-    if (prev != cp)
+    bool end;
+    end = moveboard(cp, right);
+    if (!end and prev != cp)
     {
-        ret.emplace_back(0);
+        ret.push_back(0);
     }
     cp = prev;
-    move_right(cp);
-    if (prev != cp)
+    end = moveboard(cp, right);
+    if (!end and prev != cp)
     {
         ret.push_back(1);
     }
     cp = prev;
-    move_up(cp);
-    if (prev != cp)
+    end = moveboard(cp, up);
+    if (!end and prev != cp)
     {
         ret.push_back(2);
     }
     cp = prev;
-    move_down(cp);
-    if (prev != cp)
+    end = moveboard(cp, down);
+    if (!end and prev != cp)
     {
         ret.push_back(3);
+    }
+    return ret;
+}
+
+auto all_possible_results(vector<vector<int>> prev)
+{
+    decltype(prev) cp(prev);
+    vector<decltype(prev)> ret;
+    bool end;
+    end = all_move(cp, ret, left);
+    if (!end)
+    {
+    }
+    cp = prev;
+    end = all_move(cp, ret, right);
+    if (!end and prev != cp)
+    {
+    }
+    cp = prev;
+    end = all_move(cp, ret, up);
+    if (!end and prev != cp)
+    {
+    }
+    cp = prev;
+    end = all_move(cp, ret, down);
+    if (!end and prev != cp)
+    {
     }
     return ret;
 }
