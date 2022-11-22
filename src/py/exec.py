@@ -1,4 +1,6 @@
 import asyncio
+from functools import reduce
+import ctypes
 
 import pygame as pg
 
@@ -74,7 +76,11 @@ async def autoloop():
         elif game.mode == "montecarlo":
             pass
         elif game.mode == "minimax":
-            pass
+            arr = ctypes.c_int * 16
+            inArr = arr(*reduce(lambda x, y: x + y, game.board))
+            nb = lib.minimax_result(inArr)
+            game.board[:] = [nb[0:4], nb[4:8], nb[8:12], nb[12:16]]
+            
         await asyncio.sleep(game.sleep_time)
 
 

@@ -1,20 +1,13 @@
 #include "moves.hpp"
 #include "moveutils.hpp"
-#include <vector>
+#include "minimax.hpp"
+#include <iostream>
 
-vector<vector<int>> minimax(vector<vector<int>> prev) {
-  vector<decltype(prev)> moves;
-  auto cp(prev);
-  moveboard(cp, left);
-  add_all_num(prev, moves);
-  cp = prev;
-  moveboard(cp, right);
-  add_all_num(prev, moves);
-  cp = prev;
-  moveboard(cp, up);
-  add_all_num(prev, moves);
-  cp = prev;
-  moveboard(cp, down);
-  add_all_num(prev, moves);
-  return cp;
+int main() {
+    int x[16] { 2, 2, 0, 0, 0, 4, 0, 16, 0, 0, 0, 0, 2, 2, 0, 0 };
+    int *z = minimax_result(x);
+    
+    for (int u = 0; u < 16; u++) {
+        std::cout << z[u] << " ";
+    }
 }

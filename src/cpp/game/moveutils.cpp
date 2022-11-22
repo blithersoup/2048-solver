@@ -40,7 +40,7 @@ void transpose(matrix &prev) {
 }
 
 void combine(matrix &prev) {
-  matrix mat(prev[0].size(), vector<int>());
+  matrix mat(4, vector<int>(4));
 
   for (auto i = 0; i < prev.size(); i++) {
     for (auto j = 0; j < prev[i].size() - 1; j++) {
@@ -55,77 +55,38 @@ void combine(matrix &prev) {
   prev = mat;
 }
 
-bool any_zeroes(matrix &prev) {
-  for (auto row : prev) {
-    for (auto i : row) {
-      if (i == 0) {
-        return true;
-      }
-    }
-  }
-  return false;
+matrix left(matrix prev) {
+  fill_left(prev);
+  combine(prev);
+  fill_left(prev);
+  return prev;
 }
 
-bool add_num(matrix &prev) {
-  if (!any_zeroes(prev)) {
-    return false;
-  }
-  int added = 1 << (rand() & 1 + 1);
-  int x, y;
-  while (true) {
-    x = rand() % 4;
-    y = rand() % 4;
-    if (prev[x][y] == 0) {
-      prev[x][y] = added;
-      return true;
-    }
-  }
+matrix right(matrix prev) {
+  flip(prev);
+  fill_left(prev);
+  combine(prev);
+  fill_left(prev);
+  flip(prev);
+  return prev;
 }
 
-bool add_all_num(matrix &prev, vector<matrix> &res) {
-  if (!any_zeroes(prev)) {
-    return false;
-  }
-
-  for (auto i = 0; i < 4; i++) {
-    for (auto j = 0; j < 4; j++) {
-      if (prev[i][j] == 0) {
-        prev[i][j] = 2;
-        res.push_back(std::move(prev));
-        prev[i][j] = 4;
-        res.push_back(std::move(prev));
-        prev[i][j] = 0;
-      }
-    }
-  }
-  return true;
+matrix up(matrix prev) {
+  transpose(prev);
+  fill_left(prev);
+  combine(prev);
+  fill_left(prev);
+  transpose(prev);
+  return prev;
 }
 
-int eval_board(matrix &prev) {
-  int score(0), zeroes(0);
-  for (auto row : prev) {
-    for (auto num : row) {
-      if (!num)
-        zeroes++;
-      score += num;
-    }
-  }
-  return score / zeroes;
-}
-
-auto moves_no_added(matrix &prev) {
-  vector<matrix> moves;
-  auto cp(prev);
-  moveboard(cp, left);
-  moves.push_back(cp);
-  cp = prev;
-  moveboard(cp, right);
-  moves.push_back(cp);
-  cp = prev;
-  moveboard(cp, up);
-  moves.push_back(cp);
-  cp = prev;
-  moveboard(cp, down);
-  moves.push_back(cp);
-  return moves;
+matrix down(matrix prev) {
+  transpose(prev);
+  flip(prev);
+  fill_left(prev);
+  combine(prev);
+  fill_left(prev);
+  flip(prev);
+  transpose(prev);
+  return prev;
 }
