@@ -4,6 +4,7 @@
 #include <numeric>
 #include <vector>
 
+namespace hello {
 void fill_left(matrix &prev) {
   matrix mat;
   for (auto row : prev) {
@@ -89,4 +90,5 @@ matrix down(matrix prev) {
   flip(prev);
   transpose(prev);
   return prev;
+}
 }

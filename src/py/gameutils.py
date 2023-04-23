@@ -54,9 +54,9 @@ def isKey(event, key):
 
 def gameToGroup(mat: list[list[int]]):
     """Returns list of sprites given game array"""
-    a, b, all_sprites_list = len(mat), len(mat[0]), pg.sprite.Group()
-    for x in range(a):
-        for y in range(b):
+    all_sprites_list = pg.sprite.Group()
+    for x in range(4):
+        for y in range(4):
             z = Block(
                 mat[y][x], LEFT_OFFSET + x * BORDER_SIZE, TOP_OFFSET + y * BORDER_SIZE
             )

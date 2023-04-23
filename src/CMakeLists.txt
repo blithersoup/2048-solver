@@ -1,1 +1,5 @@
-add_subdirectory(cpp)
+file(GLOB_RECURSE CPP_FILES "*.cpp")
+file(GLOB_RECURSE HPP_FILES "*.hpp")
+
+set(SRC_CPP ${CPP_FILES} CACHE INTERNAL "")
+set(SRC_HPP ${HPP_FILES} CACHE INTERNAL "")

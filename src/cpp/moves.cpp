@@ -6,6 +6,8 @@ using std::equal;
 #include <iostream>
 using std::cout;
 
+namespace hello {
+
 int calc_score(matrix board) {
   int score = 0;
   for (auto row : board) {
@@ -120,4 +122,5 @@ bool isEnd(matrix board) {
     return true;
   }
   return false;
+}
 }

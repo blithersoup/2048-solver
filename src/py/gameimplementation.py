@@ -1,5 +1,36 @@
-from functools import reduce, wraps
+from random import randint
+from functools import reduce
+import cppyy
+from cppyy.gbl.std import vector
+
+class Game:
+    """2048 python implementation"""
+    def __init__(self):
+        self.board: list[list[int]] = vector[vector[int]] (4, vector[int] (4, 0))
+        self.board[0][0] = 2
+        self.end = False
+        self.mode = 'player'
+        self.sleep_time = 1.0
+        for x in range(4):
+            for y in range(4):
+                print(self.board[x][y], end="")
+            print("")
+
+
+    def addnum(self):
+        added = randint(0,1) * 2 + 2
+        if reduce(lambda x, y: min(x,y), (all(x) for x in self.board)):
+            return False
+
+        while True:
+            x, y = randint(0,3), randint(0,3)
+            if not self.board[x][y]:
+                self.board[x][y] = added
+                return True
+
+'''
 from typing import Callable
+from functools import reduce, wraps
 from numpy import transpose, fliplr, array_equiv
 from random import randint
 
@@ -42,14 +73,15 @@ def combine(board: list[list[int]]) -> list[list[int]]:
 				board[x][y+1] = 0
 	return board
 
+
+
+'''
+
+'''
+
 class Game:
-	"""2048 python implementation"""
-	def __init__(self):
-		self.board: list[list[int]] = [[0,0,0,2],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
-		self.funclist: list[Callable] = [self.left, self.right, self.up, self.down]
-		self.end = False
-		self.mode = 'player'
-		self.sleep_time = 1
+    def __init__(self):
+        self.funclist: list[Callable] = [self.left, self.right, self.up, self.down]
 
 	@FillLeft
 	def left(self, matrix: list[list[int]]):
@@ -91,13 +123,6 @@ class Game:
 		"""Returns true if can move"""
 		return reduce(lambda x, y: x + y, map(lambda x: self.isMove(x), range(4)))
 	
-	def addnum(self):
-		added = randint(0,1) * 2 + 2
-		if reduce(lambda x, y: min(x,y), (all(x) for x in self.board)):
-			return False
 
-		while True:
-			x, y = randint(0,3), randint(0,3)
-			if not self.board[x][y]:
-				self.board[x][y] = added
-				return True
+'''
+

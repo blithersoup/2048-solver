@@ -1,9 +1,10 @@
-#include <vector>
 #pragma once
+#include <vector>
 using std::vector;
 
-using matrix = vector<vector<int>>;
+#define matrix vector<vector<int>>
 
+namespace hello{
 void fill_left(matrix);
 void flip(matrix);
 void transpose(matrix);
@@ -13,3 +14,4 @@ matrix left(matrix);
 matrix right(matrix);
 matrix up(matrix);
 matrix down(matrix);
+}

@@ -3,8 +3,8 @@
 #include <algorithm>
 #include "moves.hpp"
 #include "moveutils.hpp"
+using namespace hello;
 using std::vector;
-using std::pair;
 using std::max;
 using std::min;
 
@@ -45,49 +45,27 @@ static int minimax(vector<vector<int>> array, int depth, bool turn, int a, int b
 
 }
 
-//extern "C"
-int* minimax_result(int* in) {
-    vector<vector<int>> board;
-    int o = 0;
-    for (int i = 0; i < 4; i++) {
-        vector<int> row;
-        for (int j = 0; j < 4; j++) {
-            row.push_back(in[o++]);
-        }
-        board.push_back(row);
-    }
+namespace hello {
+
+void minimax_result(vector<vector<int>> &board) {
 
     int ret_left = minimax(left(board), 0, false, INT_MAX, INT_MIN);
     int ret_right = minimax(right(board), 0, false, INT_MAX, INT_MIN);
     int ret_up = minimax(up(board), 0, false, INT_MAX, INT_MIN);
     int ret_down = minimax(down(board), 0, false, INT_MAX, INT_MIN);
     
-    vector<int> scores { ret_left, ret_down, ret_up, ret_down };
+    int max_score = max(max(ret_left, ret_right), max(ret_up, ret_down));
 
-    int max_score = *std::max_element(scores.begin(), scores.end());
-
-    if (ret_left == max_score) {
+    if (ret_left == max_score) 
         board = left(board);
-        add_num(board);
-    }
-    else if (ret_right == max_score) {
+    else if (ret_right == max_score) 
         board = right(board);
-        add_num(board);
-    }
-    else if (ret_up == max_score) {
+    else if (ret_up == max_score) 
         board = up(board);
-        add_num(board);
-    }
-    else {
+    else 
         board = down(board);
-        add_num(board);
-    }
-    o = 0;
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            in[o++] = board[i][j];
-        }
-    }
 
-    return in;
+  add_num(board);
+}
+
 }

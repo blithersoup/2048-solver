@@ -1,14 +1,16 @@
 import asyncio
 from functools import reduce
-import ctypes
 
 import pygame as pg
 
 pg.init()
 
 from gameimplementation import Game
-from loadlibrary import lib
+# from loadlibrary import lib
 from gameutils import *
+
+import solvera
+from cppyy.gbl import hello
 
 screen = pg.display.set_mode(size)
 pg.display.set_caption("2048")
@@ -47,14 +49,20 @@ async def gameloop():
 
             # player move handling
             if game.mode == "player":
+                pass
                 if isKey(event, pg.K_LEFT):
-                    game.move(0)
+                    game.board = hello.left(game.board)
                 elif isKey(event, pg.K_RIGHT):
-                    game.move(1)
+                    game.board = hello.right(game.board)
+                    for x in range(4):
+                        for y in range(4):
+                            print(game.board[x][y], end="")
+                        print("")
                 elif isKey(event, pg.K_UP):
-                    game.move(2)
+                    game.board = hello.up(game.board)
                 elif isKey(event, pg.K_DOWN):
-                    game.move(3)
+                    game.board = hello.down(game.board)
+
 
         # rendering screen
         all_sprites_list = gameToGroup(game.board)
@@ -76,11 +84,7 @@ async def autoloop():
         elif game.mode == "montecarlo":
             pass
         elif game.mode == "minimax":
-            arr = ctypes.c_int * 16
-            inArr = arr(*reduce(lambda x, y: x + y, game.board))
-            nb = lib.minimax_result(inArr)
-            game.board[:] = [nb[0:4], nb[4:8], nb[8:12], nb[12:16]]
-            
+            hello.minimax_result(game.board) 
         await asyncio.sleep(game.sleep_time)
 
 

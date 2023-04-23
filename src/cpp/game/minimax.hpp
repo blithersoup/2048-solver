@@ -1,1 +1,0 @@
-int* minimax_result(int* in);
