@@ -4,7 +4,7 @@
 
 ## Overview
 
-This is an implementation of 2048 in Python with Pygame with the ability to switch to move completion with several algorithms.  The move algorithms are 
+This is an implementation of 2048 in Python with Pygame with the ability to switch to move completion with several algorithms.  The move algorithms are implemented in C++, and are called within Python using a cppyy build system.
 
 ### Build system
 
