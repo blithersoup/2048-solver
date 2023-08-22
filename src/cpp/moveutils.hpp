@@ -1,17 +1,14 @@
 #pragma once
-#include <vector>
-using std::vector;
+#include "matrix.hpp"
 
-#define matrix vector<vector<int>>
+namespace hello {
+vector<matrix> generate_all_moves(matrix);
+vector<matrix> generate_after_moves(matrix);
+bool isEnd(matrix);
 
-namespace hello{
-void fill_left(matrix);
-void flip(matrix);
-void transpose(matrix);
-void combine(matrix);
+// bool moveboard(matrix, void(matrix));
 
-matrix left(matrix);
-matrix right(matrix);
-matrix up(matrix);
-matrix down(matrix);
+bool add_num(matrix&);
+
+int calc_score(matrix&);
 }

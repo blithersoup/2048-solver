@@ -1,8 +1,8 @@
 #!/bin/zsh
 
-pip uninstall solvera
 rm -rf build
 mkdir build && cd $_
-cmake ..
-cmake --build .
+CMAKE_BUILD_TYPE=Debug cmake ..
+cmake --build . --parallel $(nproc --all) 
+pip install dist/*.whl --force-reinstall
 cd ..

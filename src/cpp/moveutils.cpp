@@ -1,94 +1,129 @@
 #include "moves.hpp"
-#include <algorithm>
-#include <functional>
-#include <numeric>
-#include <vector>
+#include "moveutils.hpp"
+#include <cmath>
+// using std::equal;
+
+#include <iostream>
+// using std::cout;
+#define LOG2(X) ((int) (8*sizeof (unsigned int) - __builtin_clz((unsigned)(X)) - 1)) // https://stackoverflow.com/a/11376759
+
 
 namespace hello {
-void fill_left(matrix &prev) {
-  matrix mat;
-  for (auto row : prev) {
-    int sum = std::accumulate(row.begin(), row.end(), 0);
-    vector<int> new_row = {sum, 0, 0, 0};
-    mat.emplace_back(new_row);
-  }
 
-  prev = mat;
-}
-
-void flip(matrix &prev) {
-  matrix mat;
-  for (auto row : prev) {
-    vector<int> new_row;
-    for (decltype(new_row)::reverse_iterator i; i != new_row.rend(); i++) {
-      new_row.push_back(*i);
-    }
-    mat.push_back(new_row);
-  }
-
-  prev = mat;
-}
-
-void transpose(matrix &prev) {
-  matrix mat(prev[0].size(), vector<int>());
-
-  for (auto i = 0; i < prev.size(); i++) {
-    for (auto j = 0; j < prev[i].size(); j++) {
-      mat[j].push_back(prev[i][j]);
-    }
-  }
-  prev = mat;
-}
-
-void combine(matrix &prev) {
-  matrix mat(4, vector<int>(4));
-
-  for (auto i = 0; i < prev.size(); i++) {
-    for (auto j = 0; j < prev[i].size() - 1; j++) {
-      if (prev[i][j] == prev[i][j + 1]) {
-        mat[i][j] = prev[i][j] * 2;
-        mat[i][j] = 0;
-      } else {
-        mat[i][j] = prev[i][j];
+int calc_score(matrix &board) {
+  int score = 0;
+  for (auto row : board) {
+    for (int x : row) {
+      if (x > 2) {
+        score += ((x - 1) * LOG2(x));
       }
     }
   }
-  prev = mat;
+  return score;
 }
 
-matrix left(matrix prev) {
-  fill_left(prev);
-  combine(prev);
-  fill_left(prev);
-  return prev;
+/*
+static bool any_zeroes(matrix prev) {
+  for (auto row : prev) {
+    for (auto i : row) {
+      if (i == 0) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+*/
+
+
+/*
+bool moveboard(matrix &prev, matrix movefunc(matrix)) {
+  prev = movefunc(prev);
+  return add_num(prev);
+}*/
+
+vector<matrix> generate_all_moves(matrix prev) {
+  auto cp(prev);
+  vector<matrix> ret;
+  bool end = true;
+  
+  left(cp);
+  end = add_num(prev);
+  if (end) {
+    ret.push_back(cp);
+  }
+  cp = prev;
+  right(cp);
+  end = add_num(prev);
+  if (end) {
+    ret.push_back(cp);
+  }
+  cp = prev;
+  up(cp);
+  end = add_num(prev);
+  if (end) {
+    ret.push_back(cp);
+  }
+  cp = prev;
+  down(cp);
+  end = add_num(prev);
+  if (end) {
+    ret.push_back(cp);
+  }
+  return ret;
 }
 
-matrix right(matrix prev) {
-  flip(prev);
-  fill_left(prev);
-  combine(prev);
-  fill_left(prev);
-  flip(prev);
-  return prev;
+bool add_num(matrix &prev) {
+  int added = 1 << ((rand() & 1) + 1);
+  int x, y;
+  for (int i = 0; i < 100; i++) {
+    x = rand() % 4;
+    y = rand() % 4;
+    if (prev[x][y] == 0) {
+      prev[x][y] = added;
+      return true;
+    }
+  }
+  return false;
 }
 
-matrix up(matrix prev) {
-  transpose(prev);
-  fill_left(prev);
-  combine(prev);
-  fill_left(prev);
-  transpose(prev);
-  return prev;
+vector<matrix> generate_after_moves(matrix prev) {
+  vector<matrix> res;
+  for (auto i = 0; i < 4; i++) {
+    for (auto j = 0; j < 4; j++) {
+      if (prev[i][j] == 0) {
+        prev[i][j] = 2;
+        res.push_back(prev);
+        prev[i][j] = 4;
+        res.push_back(prev);
+        prev[i][j] = 0;
+      }
+    }
+  }
+  return res;
 }
 
-matrix down(matrix prev) {
-  transpose(prev);
-  flip(prev);
-  fill_left(prev);
-  combine(prev);
-  fill_left(prev);
-  flip(prev);
-  transpose(prev);
-  return prev;
+bool isEnd(matrix board) {
+  matrix moved (board);
+  left(moved);
+  if (board != moved) {
+    return false;
+  }
+  moved = board;
+  right(moved);
+  if (board != moved) {
+    return false;
+  }
+  moved = board;
+  up(moved);
+  if (board != moved) {
+    return false;
+  }
+  moved = board;
+  down(moved);
+  if (board != moved) {
+    return false;
+  }
+  return true;
 }
-}
+} // namespace hello

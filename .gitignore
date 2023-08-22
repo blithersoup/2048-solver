@@ -74,3 +74,6 @@ build/*
 # python
 __pycache__/
 *.py[cod]
+
+# dist
+dist/

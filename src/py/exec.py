@@ -6,7 +6,6 @@ import pygame as pg
 pg.init()
 
 from gameimplementation import Game
-# from loadlibrary import lib
 from gameutils import *
 
 import solvera
@@ -33,11 +32,12 @@ async def gameloop():
             if isKey(event, pg.K_1):
                 game.mode = "player"
             elif isKey(event, pg.K_2):
-                game.mode = "beam"
-            elif isKey(event, pg.K_3):
-                game.mode = "montecarlo"
-            elif isKey(event, pg.K_4):
                 game.mode = "minimax"
+            elif isKey(event, pg.K_3):
+                game.mode = "beam"
+            elif isKey(event, pg.K_4):
+                game.mode = "montecarlo"
+            
 
             # speed change
             if isKey(event, pg.K_5):
@@ -49,19 +49,23 @@ async def gameloop():
 
             # player move handling
             if game.mode == "player":
-                pass
                 if isKey(event, pg.K_LEFT):
-                    game.board = hello.left(game.board)
+                    hello.left(game.board)
+                    game.addnum()
+                    game.end = hello.isEnd(game.board)
                 elif isKey(event, pg.K_RIGHT):
-                    game.board = hello.right(game.board)
-                    for x in range(4):
-                        for y in range(4):
-                            print(game.board[x][y], end="")
-                        print("")
+                    hello.right(game.board)
+                    game.addnum()
+                    game.end = hello.isEnd(game.board)
                 elif isKey(event, pg.K_UP):
-                    game.board = hello.up(game.board)
+                    hello.up(game.board)
+                    game.addnum()
+                    game.end = hello.isEnd(game.board)
                 elif isKey(event, pg.K_DOWN):
-                    game.board = hello.down(game.board)
+                    hello.down(game.board)
+                    game.addnum()
+                    game.end = hello.isEnd(game.board)
+                
 
 
         # rendering screen
@@ -80,11 +84,15 @@ async def autoloop():
     # will stop when event loop breaks
     while True:
         if game.mode == "beam":
-            pass
+            hello.beam_result(game.board) 
+            game.addnum()
+            game.end = hello.isEnd(game.board)
         elif game.mode == "montecarlo":
             pass
         elif game.mode == "minimax":
             hello.minimax_result(game.board) 
+            game.addnum()
+            game.end = hello.isEnd(game.board)
         await asyncio.sleep(game.sleep_time)
 
 

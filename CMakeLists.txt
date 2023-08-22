@@ -16,7 +16,7 @@ find_package(Cppyy)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall Werror Wextra")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Werror -Wextra")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -fomit-frame-pointer -march=native -flto -funroll-loops")
 
 if(NOT CMAKE_BUILD_TYPE) 
@@ -29,7 +29,7 @@ add_library(cpp SHARED ${SRC_CPP})
 
 set_target_properties(cpp PROPERTIES LINKER_LANGUAGE CXX)
 set_target_properties(cpp PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION 1)
-set_target_properties(cpp PROPERTIES PUBLIC_HEADER ${SRC_HPP})
+# set_target_properties(cpp PROPERTIES PUBLIC_HEADER ${SRC_HPP})
 
 target_include_directories(cpp PUBLIC ${CMAKE_SOURCE_DIR}/src/)
 
